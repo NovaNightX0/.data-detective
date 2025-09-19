@@ -4,44 +4,48 @@
   <meta charset="UTF-8">
   <title>🔍 محقق البيانات</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
+
     body {
-      font-family: 'Comic Sans MS', cursive, sans-serif;
+      font-family: 'Comic Neue', cursive;
       text-align: center;
       margin-top: 50px;
       direction: rtl;
       background: linear-gradient(120deg, #f6d365, #fda085);
       color: #333;
+      overflow-x: hidden;
     }
     h1 {
       color: #fff;
-      text-shadow: 2px 2px 5px #ff69b4;
+      text-shadow: 3px 3px 8px #ff69b4;
       font-size: 3em;
     }
     #question, #data {
       background-color: #fff;
       display: inline-block;
       padding: 15px 20px;
-      border-radius: 15px;
-      box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+      border-radius: 20px;
+      box-shadow: 3px 3px 15px rgba(0,0,0,0.3);
       margin: 10px 0;
-      font-size: 1.2em;
+      font-size: 1.3em;
     }
     input {
-      padding: 10px;
+      padding: 12px;
       font-size: 16px;
-      border-radius: 10px;
+      border-radius: 15px;
       border: 2px solid #ff69b4;
-      width: 200px;
+      width: 220px;
       text-align: center;
     }
     button {
       margin: 10px;
-      padding: 10px 20px;
+      padding: 12px 25px;
       font-size: 16px;
       border: none;
-      border-radius: 12px;
+      border-radius: 15px;
       cursor: pointer;
       transition: all 0.2s;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
     }
     button:hover {
       transform: scale(1.1);
@@ -49,12 +53,37 @@
     #submitBtn { background-color: #ff69b4; color: #fff; }
     #nextBtn { background-color: #1e90ff; color: #fff; }
     #result {
-      font-size: 1.5em;
+      font-size: 1.6em;
       margin: 15px 0;
+      font-weight: bold;
     }
     #score {
       font-weight: bold;
-      font-size: 1.3em;
+      font-size: 1.4em;
+      color: #fff;
+      text-shadow: 1px 1px 3px #ff69b4;
+    }
+    #credits {
+      margin-top: 30px;
+      font-size: 1.1em;
+      color: #fff;
+      text-shadow: 1px 1px 3px #ff69b4;
+    }
+
+    /* Cute floating stars */
+    .star {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: yellow;
+      border-radius: 50%;
+      animation: float 5s infinite linear;
+      opacity: 0.7;
+    }
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-150px) rotate(180deg); }
+      100% { transform: translateY(0px) rotate(360deg); }
     }
   </style>
 </head>
@@ -64,10 +93,11 @@
   <p id="data"></p>
   <input type="text" id="answer" placeholder="اكتب إجابتك هنا">
   <br>
-  <button id="submitBtn" onclick="checkAnswer()">تأكيد</button>
-  <button id="nextBtn" onclick="nextQuestion()">السؤال التالي</button>
+  <button id="submitBtn" onclick="checkAnswer()">تأكيد ✅</button>
+  <button id="nextBtn" onclick="nextQuestion()">السؤال التالي ➡️</button>
   <p id="result"></p>
-  <p>النقاط: <span id="score">0</span></p>
+  <p>النقاط: <span id="score">0</span> 🌟</p>
+  <p id="credits">Made by Maysoon and Tasbeeh 💖</p>
 
   <script>
     let score = 0;
@@ -98,15 +128,27 @@
       if (current.type === "min") correct = Math.min(...current.data);
 
       let user = document.getElementById("answer").value.trim();
+      const resultEl = document.getElementById("result");
       if (user == correct) {
-        document.getElementById("result").innerText = "✅ صحيح!";
-        document.getElementById("result").style.color = "#28a745";
+        resultEl.innerText = "✅ صحيح!";
+        resultEl.style.color = "#28a745";
         score++;
+        addStar();
       } else {
-        document.getElementById("result").innerText = "❌ خطأ! الإجابة الصحيحة هي " + correct;
-        document.getElementById("result").style.color = "#dc3545";
+        resultEl.innerText = "❌ خطأ! الإجابة الصحيحة هي " + correct;
+        resultEl.style.color = "#dc3545";
       }
-      document.getElementById("score").innerText = score;
+      document.getElementById("score").innerText = score + " 🌟";
+    }
+
+    // Cute floating stars
+    function addStar() {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * window.innerWidth + 'px';
+      star.style.background = `hsl(${Math.random()*360}, 100%, 70%)`;
+      document.body.appendChild(star);
+      setTimeout(() => star.remove(), 5000);
     }
   </script>
 </body>
